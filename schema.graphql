@@ -1,0 +1,41 @@
+type News {
+  id: String
+  title: String
+  description: String
+  image: String
+}
+
+type Comment {
+  content: String
+  news_fk: String
+  comment_tree_fk: String
+  comment_user_fk: String
+}
+
+type User {
+  email: String
+}
+
+type Query {
+  news: [News]
+  comment: [Comment]
+}
+type Mutation {
+  Login(email: String, password: String): String
+  Regis(email: String, password: String): User
+  createNews(title: String, description: String, image: String): News
+  getoneNews(id: String): News
+  updateNews(
+    id: String
+    title: String
+    description: String
+    image: String
+  ): News
+  deleteNews(id: String): News
+  createComment(
+    content: String
+    comment_user_fk: String
+    comment_tree_fk: String
+    news_fk: String
+  ): Comment
+}
