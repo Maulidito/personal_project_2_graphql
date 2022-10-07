@@ -30,8 +30,9 @@ type Mutation {
     title: String
     description: String
     image: String
+    token: String
   ): News
-  deleteNews(id: String): News
+  deleteNews(id: String, token: String): News
   createComment(
     content: String
     comment_user_fk: String

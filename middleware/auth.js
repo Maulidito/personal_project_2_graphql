@@ -22,4 +22,22 @@ async function auth(req, res, next) {
   }
 }
 
-module.exports = auth;
+async function authGraphql(tokenGraphql) {
+  try {
+    if (tokenGraphql === undefined) {
+      throw new Error("login first");
+    }
+    const token = tokenGraphql.substring(7);
+
+    const { email } = jwt.verify(token, PRIVATE_KEY);
+    const user = await RepositoryUser.GetOnebyEmail(email);
+    if (user == null) {
+      throw new Error("Error Token");
+    }
+    return { email: user.email, id: user.id };
+  } catch (error) {
+    throw { error: error.message };
+  }
+}
+
+module.exports = { auth, authGraphql };

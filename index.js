@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
 const express = require("express");
-const auth = require("./middleware/auth");
+const { authGraphql } = require("./middleware/auth");
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -15,10 +15,6 @@ db.sequelize
   .catch((err) => {
     console.log("sync Failed", err);
   });
-
-const app = express();
-
-app.use(auth);
 
 const {
   RepositoryNews,
@@ -59,10 +55,12 @@ const resolvers = {
       return res;
     },
     updateNews: async (_, data) => {
+      await authGraphql(data.token);
       let res = await RepositoryNews.Update(data);
       return res;
     },
     deleteNews: async (_, data) => {
+      await authGraphql(data.token);
       let res = await RepositoryNews.Delete(data.id);
       return res;
     },
